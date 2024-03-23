@@ -30,8 +30,9 @@ class FileStorage:
         return FileStorage.__objects
 
     def new(self, obj):
-        key = f"{obj.__class__.__name__}.{obj.id}"
-        FileStorage.__objects[key] = obj
+        if obj is not None:
+            key = f"{obj.__class__.__name__}.{obj.id}"
+            FileStorage.__objects[key] = obj
 
     def save(self):
         """This function serializes an object into
