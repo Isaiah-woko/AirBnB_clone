@@ -21,14 +21,18 @@ class BaseModel:
     """
 
     def __init__(self, *args, **kwargs):
+
         if kwargs:
             for key, value in kwargs.items():
-                if key != '__class__':
-                    setattr(self, key, value)
-                elif 'created_at' in kwargs:
+                if key == 'id':
+                    self.id = str(value)
+                elif key == 'created_at' and value is not None:
                     self.created_at = datetime.datetime.fromisoformat(value)
-                elif 'updated_at' in kwargs:
+                elif key == 'updated_at' and value is not None:
                     self.updated_at = datetime.datetime.fromisoformat(value)
+                else:
+                    if key != '__class__':
+                        setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.datetime.now()
