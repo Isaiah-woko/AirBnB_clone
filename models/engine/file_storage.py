@@ -5,6 +5,7 @@
 import json
 import os
 
+
 class FileStorage:
     """This class has attributes and methods that serializes
         instances to a JSON file and deserializes JSON file to instances:

@@ -24,13 +24,11 @@ class BaseModel:
         """Instance initialization function for every object
 
                 Attributes:
-                    id (int): unique ID
-                    created_at (str): time created
-                    updated_at (str): time updated
+                    id: unique ID
+                    created_at: time created
+                    updated_at: time updated
 
                 Args:
-                    args: not to be used
-                    kwargs:
                         id (str): uuid from dictionary
                         created_at (datetime): creation date and time
                         updated_at (datetime): updated date and time
@@ -53,10 +51,18 @@ class BaseModel:
             storage.new(self)
 
     def save(self):
+        """Updates the public instance attribute "updated_at"
+        with the current datetime
+        """
         self.updated_at = datetime.datetime.now()
         storage.save()
 
     def to_dict(self):
+        """Returns a dictionary containing all keys/values of instance
+
+        Returns:
+            dictionary
+        """
         object_dict = self.__dict__.copy()
         object_dict['__class__'] = self.__class__.__name__
         object_dict['created_at'] = self.created_at.isoformat()
@@ -65,4 +71,5 @@ class BaseModel:
         return object_dict
 
     def __str__(self):
+        """Returns a string representation of an object"""
         return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
