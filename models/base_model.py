@@ -4,67 +4,65 @@
 
 import uuid
 import datetime
-import models
+from models import storage
 
 
 class BaseModel:
-    """Base class from which other classes will inherit"""
+    """This class is the base class and it defines all
+            common attributes/methods for other classes
+
+            Attrbutes:
+            id: string - assign with an uuid when an instance is created
+            created_at: datetime - assign with the current datetime
+                        when an instance is created
+            updated_at: datetime - assign with the current datetime when an
+                        instance is created and it will be updated every time
+                        you change your object
+    """
+
     def __init__(self, *args, **kwargs):
         """Instance initialization function for every object
 
-        Attributes:
-            id (int): unique ID
-            created_at (str): time created
-            updated_at (str): time updated
+                Attributes:
+                    id (int): unique ID
+                    created_at (str): time created
+                    updated_at (str): time updated
 
-        Args:
-            args: not to be used
-            kwargs:
-                id (str): uuid from dictionary
-                created_at (datetime): creation date and time
-                updated_at (datetime): updated date and time
-        """
-
+                Args:
+                    args: not to be used
+                    kwargs:
+                        id (str): uuid from dictionary
+                        created_at (datetime): creation date and time
+                        updated_at (datetime): updated date and time
+                """
         if kwargs:
             for key, value in kwargs.items():
                 if key == 'id':
                     self.id = str(value)
-                elif key == 'created_at':
-                    self.created_at = datetime.fromisoformat(value)
-                elif key == 'updated_at':
-                    self.updated_at = datetime.fromisoformat(value)
+                elif key == 'created_at' and value is not None:
+                    self.created_at = datetime.datetime.fromisoformat(value)
+                elif key == 'updated_at' and value is not None:
+                    self.updated_at = datetime.datetime.fromisoformat(value)
                 else:
                     if key != '__class__':
                         setattr(self, key, value)
-
         else:
-            # If no arguments are passed we create the attributes
-            # all attributes set to default values
             self.id = str(uuid.uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
-            models.storage.new(self)
+            self.created_at = datetime.datetime.now()
+            self.updated_at = datetime.datetime.now()
+            storage.new(self)
 
     def save(self):
-        """Updates the public instance attribute "updated_at"
-        with the current datetime
-        """
-        self.updated_at = datetime.now()
-        models.storage.save()
+        self.updated_at = datetime.datetime.now()
+        storage.save()
 
     def to_dict(self):
-        """Returns a dictionary containing all keys/values of instance
+        object_dict = self.__dict__.copy()
+        object_dict['__class__'] = self.__class__.__name__
+        object_dict['created_at'] = self.created_at.isoformat()
+        object_dict['updated_at'] = self.updated_at.isoformat()
 
-        Returns:
-            dictionary
-        """
-        obj_dict = self.__dict__.copy()
-        obj_dict["__class__"] = self.__class__.__name__
-        obj_dict["created_at"] = self.created_at.isoformat()
-        obj_dict["updated_at"] = self.updated_at.isoformat()
-
-        return obj_dict
+        return object_dict
 
     def __str__(self):
-        """Returns a string representation of the instance"""
         return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
