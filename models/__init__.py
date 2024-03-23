@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
-"""This mosule conatins the initialzation for the python models"""
+"""This module contains the initialization for the python models"""
 
-from models.engine.file_storage import FileStorage
+from models.engine import file_storage
 
-storage = FileStorage()
+storage = file_storage.FileStorage()
 storage.reload()

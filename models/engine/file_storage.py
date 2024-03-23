@@ -4,6 +4,13 @@
 
 import json
 import os
+from models.base_model import BaseModel
+
+
+_cls = {
+    "BaseModel": BaseModel,
+    # Add other class names and corresponding classes as needed
+}
 
 
 class FileStorage:
@@ -41,5 +48,10 @@ class FileStorage:
         if os.path.isfile(FileStorage.__file_path):
             with open(FileStorage.__file_path, "r") as json_file:
                 obj = json.load(json_file)
+                for key, val in obj.items():
+                    cls_name = val["__class__"]
+                    cls = _cls.get(cls_name)
+                    if cls:
+                        FileStorage.__objects[key] = cls(**val)
         else:
             return

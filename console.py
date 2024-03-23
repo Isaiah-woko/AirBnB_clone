@@ -3,7 +3,7 @@
 """This module is for the console of the project"""
 
 import cmd
-from models.base_model import BaseModel
+# from models.base_model import BaseModel
 from models import storage
 
 
