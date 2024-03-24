@@ -4,12 +4,13 @@
 
 import cmd
 from models.base_model import BaseModel
-from models import storage, user
+from models import storage
+from models.user import User
 
 
 _classes = {
     "BaseModel": BaseModel,
-    "User": user
+    "User": User
     }
 
 
