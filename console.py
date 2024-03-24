@@ -3,15 +3,19 @@
 """This module is for the console of the project"""
 
 import cmd
-# from models.base_model import BaseModel
+from models.base_model import BaseModel
 from models import storage
+
+
+_classes = {
+    "BaseModel": BaseModel
+    }
 
 
 class HBNBCommand(cmd.Cmd):
     """This class contains the console for the python cmd"""
 
     prompt = "(hbnb) "
-    classes = ["BaseModel"]
 
     def emptyline(self):
         pass
@@ -28,7 +32,7 @@ class HBNBCommand(cmd.Cmd):
             return
         args = arg.split()
         class_name = args[0]
-        if class_name not in self.classes:
+        if class_name not in _classes:
             print("** class doesn't exist **")
             return
 
@@ -44,7 +48,7 @@ class HBNBCommand(cmd.Cmd):
 
         args = arg.split()
         class_name = args[0]
-        if class_name not in self.classes:
+        if class_name not in _classes:
             print("** class doesn't exist **")
             return
 
@@ -59,6 +63,28 @@ class HBNBCommand(cmd.Cmd):
             return
 
         print(storage.all()[key])
+
+    def do_destroy(self, arg):
+        if not arg:
+            print("** class name missing **")
+            return
+
+        args = arg.split()
+        class_name = args[0]
+
+        if class_name not in _classes:
+            print("** class doesn't exist **")
+            return
+
+        key = f"{args[0]}.{args[1]}"
+        obj = storage.all
+
+        if key not in obj:
+            print("** no instance found **")
+            return
+        else:
+            del obj[key]
+            storage.save()
 
 
 if __name__ == '__main__':
