@@ -5,10 +5,12 @@
 import json
 import os
 from models.base_model import BaseModel
+from models import user
 
 
 _cls = {
     "BaseModel": BaseModel,
+    "User": user
     # Add other class names and corresponding classes as needed
 }
 
