@@ -3,14 +3,19 @@
 """This module contains the definition for the file Storage class"""
 
 import json
-import os
 from models.base_model import BaseModel
-from models import user
+from models.user import User
+# from models.state import State
+# from models.city import City
+# from models.amenity import Amenity
+# from models.place import Place
+# from models.review import Review
+import os
 
 
 _cls = {
     "BaseModel": BaseModel,
-    "User": user
+    "User": User,
     # Add other class names and corresponding classes as needed
 }
 
@@ -51,10 +56,11 @@ class FileStorage:
         if os.path.isfile(FileStorage.__file_path):
             with open(FileStorage.__file_path, "r") as json_file:
                 obj = json.load(json_file)
-                for key, val in obj.items():
-                    cls_name = val["__class__"]
-                    cls = _cls.get(cls_name)
-                    if cls:
-                        FileStorage.__objects[key] = cls(**val)
+
+            for key, val in obj.items():
+                cls_name = val["__class__"]
+                cls = _cls.get(cls_name)
+                if cls:
+                    FileStorage.__objects[key] = cls(**val)
         else:
             return
