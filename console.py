@@ -91,9 +91,9 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        key = f"{args[0]}.{args[1]}"
-        obj = storage.all
-
+        instance_id = args[1]
+        key = f"{class_name}.{instance_id}"
+        obj = storage.all()
         if key not in obj:
             print("** no instance found **")
             return
@@ -129,6 +129,18 @@ class HBNBCommand(cmd.Cmd):
         print(list_of_string)
 
     def do_update(self, arg):
+        """
+    Updates an instance based on the class name and id by adding
+    or updating an attribute. Saves the change into the JSON file.
+    Usage: update <class name> <id> <attribute name> "<attribute value>"
+    Only one attribute can be updated at a time.
+    The attribute value must be casted to the attribute type.
+    If any required argument is missing or invalid, appropriate
+    error messages are printed.
+    Args:
+        arg (str): A string containing the class name, instance id,
+                   attribute name, and attribute value.
+    """
         if not arg:
             print("** class name missing **")
             return
